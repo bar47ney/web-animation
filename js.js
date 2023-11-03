@@ -194,14 +194,34 @@
 //     return counter
 // }
 
+const main = document.querySelector(".main");
+const lightWeb = document.querySelector("#light-web");
+let colorWeb = `rgba(255, 255, 255, 0.8)`;
+let flagWeb = false
+if (lightWeb) {
+  lightWeb.addEventListener("click", () => {
+    if(!flagWeb){
+      colorWeb = `rgba(9, 9, 9,`;
+      console.log(colorWeb)
+      flagWeb = true
+    } else{      
+      colorWeb = `rgba(255, 255, 255,`;
+      console.log(colorWeb)
+      flagWeb = false
+    }
+  });
+}
+
 let paramBgColor = {
   now: {
     first: "",
     second: "",
   },
   night: {
-    first: "#1a387513",
-    second: "#041a46",
+    // first: "#1a387513",
+    // second: "#041a46",
+    first: "#000",
+    second: "#000",
   },
   day: {
     first: "red",
@@ -280,11 +300,11 @@ canvas.height = window.innerHeight;
 
 ////NEW_WEB_ANIMATION
 let particleArray = [];
-const lengthOfParticles = 15;
+const lengthOfParticles = 1000;
 
 class Particle {
   constructor(endX, endY, x, y) {
-    this.size = Math.random() * 3 + 1;
+    this.size = Math.random() * 9 + 1;
     this.x = x;
     this.y = y;
     this.startX = x;
@@ -351,7 +371,7 @@ class Particle {
       ctx.beginPath();
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.strokeStyle = "white";
+      ctx.strokeStyle = colorWeb + " 0.8)";
       ctx.lineWidth = this.width;
       ctx.moveTo(this.startX, this.startY);
       ctx.lineTo(this.x, this.y);
@@ -422,7 +442,7 @@ window.addEventListener("click", (event) => {
   targetElement = event.target;
   oldStyle = window.getComputedStyle(targetElement);
   coordinateTargetElement = targetElement.getBoundingClientRect();
-  const lengthWeb = 12 * Math.random() + 1;
+  const lengthWeb = 21 * Math.random() + 1;
   let choose = Math.round(Math.random());
   let radius = null;
   let x = null;
@@ -440,10 +460,10 @@ window.addEventListener("click", (event) => {
     let whereX = (Math.random() * radius) / 2;
     let whereY = (Math.random() * radius) / 2;
     if (Math.round(Math.random()) === 1) {
-      whereX *= -1;
+      whereX *= -20;
     }
     if (Math.round(Math.random()) === 0) {
-      whereY *= -1;
+      whereY *= -20;
     }
     // const endX = event.x + whereX
     // const endY = event.y + whereY
@@ -475,7 +495,7 @@ function getRandomArbitrary(min, max) {
 
 function connect() {
   let opacityValue = 1;
-  const valueConnectWeb = getRandomArbitrary(3, 6);
+  const valueConnectWeb = getRandomArbitrary(10, 20);
   for (let i = 0; i < particleArray.length; i++) {
     for (let j = i; j < particleArray.length; j++) {
       for (let a = 2; a < particleArray[i].pointsWeb.length; a++) {
@@ -493,7 +513,8 @@ function connect() {
             let distance = Math.sqrt(dx * dx + dy * dy);
 
             // opacityValue = 1 - (distance / 70)
-            ctx.strokeStyle = "rgba(255, 255, 255," + opacityValue + ")";
+            // ctx.strokeStyle = `${colorWeb}, ${opacityValue})`;
+            ctx.strokeStyle = `${colorWeb}, 0.4)`;
 
             if (distance < 70) {
               ctx.lineWidth = 1;
@@ -560,6 +581,9 @@ light.addEventListener("click", () => {
   } else {
     paramBgColor.now = paramBgColor.day;
   }
+  if (main) {
+    main.classList.toggle("night");
+  }
 });
 
 setInterval(() => {
@@ -576,11 +600,12 @@ setInterval(() => {
     let distance = Math.sqrt(dx * dx + dy * dy);
 
     opacityValue = 1 - distance / radiusSpider;
-    ctx.strokeStyle = "rgba(255, 255, 255," + opacityValue + ")";
+    // ctx.strokeStyle = `${colorWeb}, ${opacityValue})`;
+    ctx.strokeStyle = `${colorWeb}, 0.4)`;
 
     if (distance < radiusSpider) {
       ctx.lineWidth = masWebMouse[j].width;
-      ctx.fillStyle = "white";
+      ctx.fillStyle = `${colorWeb}, 0.4)`;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.beginPath();

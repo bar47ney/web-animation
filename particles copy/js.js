@@ -203,14 +203,18 @@
 //     return counter
 // }
 
+const main = document.querySelector(".main")
+
 let paramBgColor = {
     now: {
         first: "",
         second: ""
     },
     night: {
-        first: "#1a387513",
-        second: "#041a46"
+        // first: "#1a387513",
+        // second: "#041a46",
+        first: "#000",
+        second: "#000",
     }, 
     day: {
         first: "red",
@@ -545,7 +549,7 @@ setInterval(() => {
             let distance = Math.sqrt(dx * dx + dy * dy)
 
             opacityValue = 1 - (distance / radiusSpider)
-            ctx.strokeStyle = "rgba(255, 255, 255," + opacityValue + ")"
+            ctx.strokeStyle = "rgba(9, 9, 9," + opacityValue + ")"
             
             if (distance < radiusSpider){
                 ctx.lineWidth = masWebMouse[j].width
@@ -559,6 +563,18 @@ setInterval(() => {
             }
         }
 }, 30)
+
+let light = document.querySelector("#light");
+light.addEventListener("click", () => {
+  if (paramBgColor.now === paramBgColor.day) {
+    paramBgColor.now = paramBgColor.night;
+  } else {
+    paramBgColor.now = paramBgColor.day;
+  }
+  if(main){
+    main.classList.toggle("night")
+  }
+});
 
 ///SPIDER_ANIMATION
 window.addEventListener("mousemove", (event) => {

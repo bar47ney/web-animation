@@ -9,6 +9,19 @@
   width: 0;
 }
 
+.night svg,
+.night svg *{
+  fill: white;
+  color: white;
+}
+
+.night .menuItems img{
+  background: white;
+  transition: .3s;
+  border-radius: 50%;
+  padding: 7px;
+}
+
 .main {
   height: 100vh;
   width: 100%;

@@ -1,59 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Spider</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-
-  <body>
-    <div class="main">
-      <header>
-        <div class="menu">
-          <div class="menuItems">
-            <a href="particles/index.html">
-              <img src="icons/moon.png" alt="mesjaz"
-            /></a>
-          </div>
-          <div class="menuItems">
-            <a href="particles copy/index.html"
-              ><img src="icons/power.png" alt="mesjaz"
-            /></a>
-          </div>
-          <div id="light" class="menuItems">
-            <img src="icons/light.png" alt="mesjaz" />
-          </div>
-          <div id="light-web" class="menuItems">
-            <img src="icons/light.png" alt="mesjaz" />
-          </div>
-        </div>
-      </header>
-      <div id="item1" class="items">
-        <p></p>
-        <!-- <img id="spider1" class="spider" src="img/spider1.png" alt="spider1"> -->
-        <!-- <img id="spider1" class="spider" src="img/spider.svg" alt="spider1"> -->
-        <?xml version="1.0" standalone="no"?>
-        <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-        <svg
-          id="spider1"
-          class="spider"
-          version="1.0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="1269.000000pt"
-          height="1280.000000pt"
-          viewBox="0 0 1269.000000 1280.000000"
-          preserveAspectRatio="xMidYMid meet"
-        >
-          <metadata>
-            Created by potrace 1.15, written by Peter Selinger 2001-2017
-          </metadata>
-          <g
-            transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-            fill="#000000"
-            stroke="none"
-          >
-            <path
-              d="M10527 12793 c-12 -11 -8 -48 9 -71 31 -45 74 -196 109 -387 7 -38
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="1269.000000pt" height="1280.000000pt" viewBox="0 0 1269.000000 1280.000000"
+ preserveAspectRatio="xMidYMid meet">
+<metadata>
+Created by potrace 1.15, written by Peter Selinger 2001-2017
+</metadata>
+<g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
+fill="#000000" stroke="none">
+<path d="M10527 12793 c-12 -11 -8 -48 9 -71 31 -45 74 -196 109 -387 7 -38
 22 -110 33 -160 12 -49 30 -137 42 -195 11 -58 27 -127 35 -155 7 -27 17 -81
 20 -120 4 -38 11 -88 16 -110 5 -22 23 -139 40 -260 17 -121 37 -260 44 -310
 8 -49 18 -119 24 -155 11 -76 28 -297 37 -490 5 -113 3 -140 -10 -165 -9 -16
@@ -218,25 +174,6 @@ l-33 -55 -3 -160 c-4 -148 3 -438 28 -1180 6 -159 17 -492 25 -740 29 -858 41
 -29 180 -8 40 -27 135 -41 212 -14 77 -32 158 -40 180 -7 22 -19 73 -25 114
 -6 41 -13 77 -15 82 -3 4 -14 52 -25 106 -20 98 -42 182 -62 238 -5 17 -23 77
 -38 135 -34 126 -96 314 -120 365 -5 11 -17 43 -26 70 -23 71 -85 215 -105
-245 -9 14 -33 51 -54 82 -52 82 -106 124 -128 101z"
-            />
-          </g>
-        </svg>
-
-        <p class="h1">Spider 1</p>
-      </div>
-      <div id="item2" class="items">
-        <h1 class="h1">Get element by spider</h1>
-        <img id="spider2" class="spider" src="img/spider2.png" alt="spider2" />
-        <p class="h1">Spider 2</p>
-      </div>
-      <div id="item3" class="items">
-        <img id="spider3" class="spider" src="img/spider3.png" alt="spider3" />
-
-        <p class="h1">Spider 3</p>
-      </div>
-    </div>
-    <canvas id="canvas1"></canvas>
-    <script src="js.js"></script>
-  </body>
-</html>
+245 -9 14 -33 51 -54 82 -52 82 -106 124 -128 101z"/>
+</g>
+</svg>
