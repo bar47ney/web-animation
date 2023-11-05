@@ -197,17 +197,19 @@
 const main = document.querySelector(".main");
 const lightWeb = document.querySelector("#light-web");
 let colorWeb = `rgba(255, 255, 255, 0.8)`;
-let flagWeb = false
+let flagWeb = false;
 if (lightWeb) {
   lightWeb.addEventListener("click", () => {
-    if(!flagWeb){
+    if (!flagWeb) {
       colorWeb = `rgba(9, 9, 9,`;
-      console.log(colorWeb)
-      flagWeb = true
-    } else{      
+      // console.log(colorWeb);
+      flagWeb = true;
+      lightWeb.classList.add("black-web");
+    } else {
       colorWeb = `rgba(255, 255, 255,`;
-      console.log(colorWeb)
-      flagWeb = false
+      // console.log(colorWeb);
+      flagWeb = false;
+      lightWeb.classList.remove("black-web");
     }
   });
 }
@@ -229,7 +231,7 @@ let paramBgColor = {
   },
   dayOrNight() {
     let nowHours = new Date(Date.now()).getHours();
-    console.log(nowHours);
+    // console.log(nowHours);
     if (21 <= nowHours || nowHours < 9) {
       this.now = this.night;
     } else if (9 <= nowHours && nowHours < 21) {
@@ -421,71 +423,78 @@ function checkInnerTargetElement(
   }
 }
 function getElementToWeb(targetElement) {
-  targetElement.style.cssText = `
-                transform: scale(1.3);
-                box-shadow: 0px 0px 60px black;
-                transition: 0.3s;`;
-  console.log("вошёл");
+  // targetElement.style.cssText = `
+  //               transform: scale(1.3);
+  //               box-shadow: 0px 0px 60px black;
+  //               transition: 0.3s;`;
+  // console.log("вошёл");
+
+  targetElement.classList.add("get-element");
   setTimeout(() => {
     canvas.style.cssText = `
         display: none;`;
-    targetElement.style.cssText = oldStyle;
+    // targetElement.style.cssText = oldStyle;
+    targetElement.classList.remove("get-element");
+    targetElement.remove();
+    chooseTarget();
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }, 3000);
 }
 
 window.addEventListener("click", (event) => {
-  particleArray = [];
-  canvas.style.cssText = `
-    display: block;`;
-  targetElement = event.target;
-  oldStyle = window.getComputedStyle(targetElement);
-  coordinateTargetElement = targetElement.getBoundingClientRect();
-  const lengthWeb = 21 * Math.random() + 1;
-  let choose = Math.round(Math.random());
-  let radius = null;
-  let x = null;
-  let y = null;
-  if (choose === 1) {
-    x = 0;
-    y = Math.random() * canvas.height;
-    radius = coordinateTargetElement.height;
-  } else if (choose === 0) {
-    x = Math.random() * canvas.width;
-    y = 0;
-    radius = coordinateTargetElement.width;
-  }
-  for (let i = 0; i < lengthWeb; i++) {
-    let whereX = (Math.random() * radius) / 2;
-    let whereY = (Math.random() * radius) / 2;
-    if (Math.round(Math.random()) === 1) {
-      whereX *= -20;
+  if (event.target.classList.contains("target")) {
+    targetElement = event.target;
+    particleArray = [];
+    canvas.style.cssText = `
+      display: block;`;
+    oldStyle = window.getComputedStyle(targetElement);
+    coordinateTargetElement = targetElement.getBoundingClientRect();
+    const lengthWeb = 21 * Math.random() + 1;
+    let choose = Math.round(Math.random());
+    let radius = null;
+    let x = null;
+    let y = null;
+    if (choose === 1) {
+      x = 0;
+      y = Math.random() * canvas.height;
+      radius = coordinateTargetElement.height;
+    } else if (choose === 0) {
+      x = Math.random() * canvas.width;
+      y = 0;
+      radius = coordinateTargetElement.width;
     }
-    if (Math.round(Math.random()) === 0) {
-      whereY *= -20;
+    for (let i = 0; i < lengthWeb; i++) {
+      let whereX = (Math.random() * radius) / 2;
+      let whereY = (Math.random() * radius) / 2;
+      if (Math.round(Math.random()) === 1) {
+        whereX *= -20;
+      }
+      if (Math.round(Math.random()) === 0) {
+        whereY *= -20;
+      }
+      // const endX = event.x + whereX
+      // const endY = event.y + whereY
+      let endX =
+        getRandomArbitrary(
+          coordinateTargetElement.x,
+          coordinateTargetElement.x + coordinateTargetElement.width
+        ) + 1;
+      let endY =
+        getRandomArbitrary(
+          coordinateTargetElement.y,
+          coordinateTargetElement.y + coordinateTargetElement.height
+        ) + 1;
+      // while(endX > event.x + 1 && endX < event.x - 1){
+      //     endX = getRandomArbitrary(coordinateTargetElement.x,coordinateTargetElement.x + coordinateTargetElement.width) + 1
+      // }
+      // while(endY > event.y + 1 && endY < event.y - 1){
+      //     endY = getRandomArbitrary(coordinateTargetElement.y,coordinateTargetElement.y + coordinateTargetElement.height) + 1
+      // }
+      // const xxx = endX
+      // const yyy = endY
+      particleArray.unshift(new Particle(endX, endY, x, y));
     }
-    // const endX = event.x + whereX
-    // const endY = event.y + whereY
-    let endX =
-      getRandomArbitrary(
-        coordinateTargetElement.x,
-        coordinateTargetElement.x + coordinateTargetElement.width
-      ) + 1;
-    let endY =
-      getRandomArbitrary(
-        coordinateTargetElement.y,
-        coordinateTargetElement.y + coordinateTargetElement.height
-      ) + 1;
-    // while(endX > event.x + 1 && endX < event.x - 1){
-    //     endX = getRandomArbitrary(coordinateTargetElement.x,coordinateTargetElement.x + coordinateTargetElement.width) + 1
-    // }
-    // while(endY > event.y + 1 && endY < event.y - 1){
-    //     endY = getRandomArbitrary(coordinateTargetElement.y,coordinateTargetElement.y + coordinateTargetElement.height) + 1
-    // }
-    // const xxx = endX
-    // const yyy = endY
-    particleArray.unshift(new Particle(endX, endY, x, y));
   }
 });
 
@@ -540,7 +549,7 @@ function connect() {
 
 ///CREATE_SPIDER_POINTS
 let masWebMouse = [];
-const lengthWebMouse = 1200;
+const lengthWebMouse = 120;
 // if((600 <= canvas.width && canvas.width <= 900) || (600 <= canvas.height && canvas.height <= 900)){
 //     lengthWebMouse = 700
 // } else if(canvas.width < 600 || canvas.height < 600){
@@ -587,25 +596,53 @@ light.addEventListener("click", () => {
 });
 
 setInterval(() => {
-  for (let i = 0; i < masWebMouse.length; i++) {
-    // masWebMouse[i].update()
-    // masWebMouse[i].draw()
+  if (sensFlag) {
+    for (let i = 0; i < masWebMouse.length; i++) {
+      masWebMouse[i].update();
+      masWebMouse[i].draw();
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
-  // ctx.clearRect(0, 0, canvas.width, canvas.height)
   let opacityValue = 1;
-  const radiusSpider = 70;
+  let opacityValueDist = null;
+
+  const targets = document.querySelectorAll(".target");
+  if (targets) {
+    targets.forEach((item) => {
+      const targetRect = item.getBoundingClientRect();
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+
+      const distance = getDistance(mouse.x, mouse.y, targetX, targetY);
+
+      opacityValueDist = 1 - distance / canvas.width;
+
+      item.style = `box-shadow: 0px 0px ${
+        opacityValueDist * 0.7
+      }px rgba(0, 0, 0, ${opacityValueDist});`;
+
+      console.log(distance);
+    });
+  }
+
+  const radiusSpider = 170;
   for (let j = 0; j < masWebMouse.length; j++) {
     let dx = mouse.x - masWebMouse[j].x;
     let dy = mouse.y - masWebMouse[j].y;
     let distance = Math.sqrt(dx * dx + dy * dy);
 
-    opacityValue = 1 - distance / radiusSpider;
+    opacityValue = opacityValueDist - distance / radiusSpider;
     // ctx.strokeStyle = `${colorWeb}, ${opacityValue})`;
-    ctx.strokeStyle = `${colorWeb}, 0.4)`;
+    // ctx.strokeStyle = colorWeb + " " + opacityValue + ")";
+    if (flagWeb) {
+      ctx.strokeStyle = "rgba(9, 9, 9," + opacityValue + ")";
+    } else {
+      ctx.strokeStyle = "rgba(255, 255, 255," + opacityValue + ")";
+    }
 
     if (distance < radiusSpider) {
       ctx.lineWidth = masWebMouse[j].width;
-      ctx.fillStyle = `${colorWeb}, 0.4)`;
+      ctx.fillStyle = "red";
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.beginPath();
@@ -617,10 +654,57 @@ setInterval(() => {
 }, 30);
 
 ///SPIDER_ANIMATION
-// window.addEventListener("mousemove", (event) => {
-//     mouse.x = event.x
-//     mouse.y = event.y
-// })
+
+const splderSense = () => {
+  mouse.x = event.x;
+  mouse.y = event.y;
+};
+
+let sensFlag = false;
+
+window.addEventListener("contextmenu", () => {
+  event.preventDefault()
+  if (!sensFlag) {
+    window.addEventListener("mousemove", splderSense);
+    // console.log("on");
+    sensFlag = true;
+    canvas.style.cssText = `
+      display: block;`;
+  } else {
+    window.removeEventListener("mousemove", splderSense);
+    // console.log("off");
+    sensFlag = false;
+    canvas.style.cssText = `
+      display: none;`;
+  }
+});
+
+// Получаем все элементы с классом '.target'
+const targets = document.querySelectorAll(".target");
+
+// Функция для вычисления расстояния между двумя точками
+function getDistance(x1, y1, x2, y2) {
+  const xDistance = x2 - x1;
+  const yDistance = y2 - y1;
+
+  return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+}
+
+const chooseTarget = () => {
+  // Получаем все элементы, которым хотим добавить класс
+  const elements = document.querySelectorAll(".potencial-target");
+
+  // Генерируем случайный индекс элемента
+  const randomIndex = Math.floor(Math.random() * elements.length);
+
+  // Выбираем случайный элемент
+  const randomElement = elements[randomIndex];
+
+  // Добавляем класс случайному элементу
+  randomElement.classList.add("target");
+};
+
+chooseTarget();
 
 ////OLD_WEB_ANIMATION
 // document.addEventListener("click", (event) => {
@@ -746,3 +830,8 @@ setInterval(() => {
 //     canvas.width = window.innerWidth
 //     canvas.height = window.innerHeight
 // })
+
+// Получаем все элементы с классом '.target'
+// const targets = document.querySelectorAll(".target");
+
+// Функция для вычисления расстояния между двумя точками
