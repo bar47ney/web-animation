@@ -436,14 +436,29 @@ function getElementToWeb(targetElement) {
     // targetElement.style.cssText = oldStyle;
     targetElement.classList.remove("get-element");
     targetElement.remove();
-    chooseTarget();
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }, 3000);
 }
 
+// setInterval(() => {
+//   chooseTarget();
+//   console.log(document.querySelectorAll(".target"));
+// }, 60000);
+
+let totalScore = 0
+
 window.addEventListener("click", (event) => {
   if (event.target.classList.contains("target")) {
+    if (document.querySelectorAll(".target")) {
+      document.querySelectorAll(".target").forEach((item) => {
+        item.classList.remove(".target");
+      });
+    }
+    chooseTarget();
+    console.log(document.querySelectorAll(".target"));
+    totalScore += 1
+    document.querySelector("#score").innerHTML = `Score: ${totalScore}`
     targetElement = event.target;
     particleArray = [];
     canvas.style.cssText = `
@@ -549,7 +564,7 @@ function connect() {
 
 ///CREATE_SPIDER_POINTS
 let masWebMouse = [];
-const lengthWebMouse = 120;
+const lengthWebMouse = 300;
 // if((600 <= canvas.width && canvas.width <= 900) || (600 <= canvas.height && canvas.height <= 900)){
 //     lengthWebMouse = 700
 // } else if(canvas.width < 600 || canvas.height < 600){
@@ -618,10 +633,10 @@ setInterval(() => {
       opacityValueDist = 1 - distance / canvas.width;
 
       item.style = `box-shadow: 0px 0px ${
-        opacityValueDist * 0.7
+        opacityValueDist * 2.7
       }px rgba(0, 0, 0, ${opacityValueDist});`;
 
-      console.log(distance);
+      // console.log(distance);
     });
   }
 
@@ -663,7 +678,7 @@ const splderSense = () => {
 let sensFlag = false;
 
 window.addEventListener("contextmenu", () => {
-  event.preventDefault()
+  event.preventDefault();
   if (!sensFlag) {
     window.addEventListener("mousemove", splderSense);
     // console.log("on");
@@ -704,7 +719,23 @@ const chooseTarget = () => {
   randomElement.classList.add("target");
 };
 
+const createNewTargets = () => {
+  const item3 = document.querySelector("#item3");
+  const spiderTarget = document.querySelector(".spider-target");
+  const countTargets = 20;
+  for (let i = 0; i < countTargets; i++) {
+    const copyTarget = spiderTarget.cloneNode(true);
+    copyTarget.style.left = `${Math.random() * window.innerWidth}px`;
+    copyTarget.style.top = `${Math.random() * window.innerHeight}px`;
+    item3.insertAdjacentElement("afterend", copyTarget);
+  }
+};
+
+createNewTargets();
+
 chooseTarget();
+
+console.log(document.querySelectorAll(".target"));
 
 ////OLD_WEB_ANIMATION
 // document.addEventListener("click", (event) => {
