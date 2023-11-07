@@ -181,6 +181,7 @@ header {
 
 .potencial-target {
   animation: web 10s ease infinite;
+  opacity: 0;
 }
 .potencial-target:nth-child(2n) {
   animation: web-anti 5s ease infinite;

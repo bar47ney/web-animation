@@ -233,7 +233,8 @@ let paramBgColor = {
     let nowHours = new Date(Date.now()).getHours();
     // console.log(nowHours);
     if (21 <= nowHours || nowHours < 9) {
-      this.now = this.night;
+      // this.now = this.night;
+      this.now = this.day;
     } else if (9 <= nowHours && nowHours < 21) {
       this.now = this.day;
     }
@@ -632,9 +633,17 @@ setInterval(() => {
 
       opacityValueDist = 1 - distance / canvas.width;
 
-      item.style = `box-shadow: 0px 0px ${
-        opacityValueDist * 2.7
-      }px rgba(0, 0, 0, ${opacityValueDist});`;
+      let visibleValue = 20
+
+      // item.style = `box-shadow: 0px 0px ${
+      //   opacityValueDist * 2.7
+      // }px rgba(0, 0, 0, ${opacityValueDist});`;
+
+      if(distance < 100){
+        visibleValue = 2
+      }
+      
+      item.style = `opacity: ${opacityValueDist / visibleValue};`;
 
       // console.log(distance);
     });
