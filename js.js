@@ -214,6 +214,20 @@ if (lightWeb) {
   });
 }
 
+const changeWeb = () => {
+  if (!flagWeb) {
+    colorWeb = `rgba(9, 9, 9,`;
+    // console.log(colorWeb);
+    flagWeb = true;
+    lightWeb.classList.add("black-web");
+  } else {
+    colorWeb = `rgba(255, 255, 255,`;
+    // console.log(colorWeb);
+    flagWeb = false;
+    lightWeb.classList.remove("black-web");
+  }
+};
+
 let paramBgColor = {
   now: {
     first: "",
@@ -439,7 +453,7 @@ function getElementToWeb(targetElement) {
     targetElement.remove();
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }, 3000);
+  }, 1000);
 }
 
 // setInterval(() => {
@@ -447,7 +461,9 @@ function getElementToWeb(targetElement) {
 //   console.log(document.querySelectorAll(".target"));
 // }, 60000);
 
-let totalScore = 0
+let totalScore = 0;
+let comboScore = 0;
+let comboTimeout = null;
 
 window.addEventListener("click", (event) => {
   if (event.target.classList.contains("target")) {
@@ -456,10 +472,28 @@ window.addEventListener("click", (event) => {
         item.classList.remove(".target");
       });
     }
-    chooseTarget();
+    createNewTargets();
+    // chooseTarget();
     console.log(document.querySelectorAll(".target"));
-    totalScore += 1
-    document.querySelector("#score").innerHTML = `Score: ${totalScore}`
+    totalScore += 1;
+    comboScore += 1;
+    setCombo();
+    if (totalScore % 5 === 0) {
+      // bigFeel();
+    }
+    if (totalScore % 10 === 0) {
+      changeBg();
+    }
+    if (comboScore === 1) {
+      console.log("start Combo");
+      comboTimeout = setTimeout(() => {
+        comboScore = 0;
+        setCombo();
+        console.log("end Combo");
+      }, 13000);
+    }
+    addTime();
+    document.querySelector("#score").innerHTML = `Score: ${totalScore}`;
     targetElement = event.target;
     particleArray = [];
     canvas.style.cssText = `
@@ -513,6 +547,15 @@ window.addEventListener("click", (event) => {
     }
   }
 });
+
+const changeBg = () => {
+  paramBgColor.day.first = `rgb(${Math.floor(
+    Math.random() * 255
+  )}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
+  paramBgColor.day.second = `rgb(${Math.floor(
+    Math.random() * 255
+  )}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
+};
 
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
@@ -611,7 +654,9 @@ light.addEventListener("click", () => {
   }
 });
 
-setInterval(() => {
+let radiusFeel = 150;
+
+const distanceCheckInterval = setInterval(() => {
   if (sensFlag) {
     for (let i = 0; i < masWebMouse.length; i++) {
       masWebMouse[i].update();
@@ -633,23 +678,23 @@ setInterval(() => {
 
       opacityValueDist = 1 - distance / canvas.width;
 
-      let visibleValue = 20
+      let visibleValue = 20;
 
       // item.style = `box-shadow: 0px 0px ${
       //   opacityValueDist * 2.7
       // }px rgba(0, 0, 0, ${opacityValueDist});`;
 
-      if(distance < 100){
-        visibleValue = 2
+      if (distance < radiusFeel) {
+        visibleValue = 2;
       }
-      
-      item.style = `opacity: ${opacityValueDist / visibleValue};`;
+
+      item.style.opacity = `${opacityValueDist / visibleValue}`;
 
       // console.log(distance);
     });
   }
 
-  const radiusSpider = 170;
+  const radiusSpider = radiusFeel;
   for (let j = 0; j < masWebMouse.length; j++) {
     let dx = mouse.x - masWebMouse[j].x;
     let dy = mouse.y - masWebMouse[j].y;
@@ -730,22 +775,97 @@ const chooseTarget = () => {
 
 const createNewTargets = () => {
   const item3 = document.querySelector("#item3");
-  const spiderTarget = document.querySelector(".spider-target");
-  const countTargets = 20;
-  for (let i = 0; i < countTargets; i++) {
-    const copyTarget = spiderTarget.cloneNode(true);
-    copyTarget.style.left = `${Math.random() * window.innerWidth}px`;
-    copyTarget.style.top = `${Math.random() * window.innerHeight}px`;
-    item3.insertAdjacentElement("afterend", copyTarget);
-  }
+  // const spiderTarget = document.querySelector(".spider-target");
+  // const countTargets = 20;
+  // for (let i = 0; i < countTargets; i++) {
+  // const copyTarget = spiderTarget.cloneNode(true);
+  // copyTarget.style.left = `${Math.random() * window.innerWidth}px`;
+  // copyTarget.style.top = `${Math.random() * window.innerHeight}px`;
+  const topRandom = `top: ${Math.random() * (window.innerHeight - 150)}px;`;
+  const leftRandom = `left: ${Math.random() * (window.innerWidth - 150)}px;`;
+  item3.insertAdjacentHTML(
+    "afterend",
+    `<img id="" class="target spider-target potencial-target" src="img/spider3.png" alt="spider3" style="${topRandom} ${leftRandom}"/>`
+  );
+  // }
 };
 
+console.log(window.innerHeight)
+console.log(window.innerWidth)
 createNewTargets();
 
-chooseTarget();
+// chooseTarget();
 
 console.log(document.querySelectorAll(".target"));
 
+let time = 10;
+const timeElement = document.querySelector("#time");
+
+const timer = setInterval(() => {
+  time--;
+  timeElement.innerHTML = time;
+  console.log(radiusFeel);
+  if (comboScore >= 4) {
+    bigFeel(
+      (textFeel = `COMBO ULTIMATE WEB!!!`),
+      (radiusFeelAdd = 450),
+      (timeAdd = 10),
+      (timing = 12000)
+    );
+    comboScore = 0;
+    setCombo();
+    clearTimeout(comboTimeout)
+  }
+  if (time === 0) {
+    window.removeEventListener("mousemove", splderSense);
+    clearInterval(distanceCheckInterval);
+    clearInterval(timer);
+    document.querySelector(
+      "#score"
+    ).innerHTML = `Time is gone! Your score: ${totalScore}`;
+    document.querySelectorAll(".target").forEach((item) => {
+      item.style.opacity = `1`;
+      item.style.width = `width: 50px`;
+      item.classList.add("no-finded");
+    });
+  }
+}, 1000);
+
+const addTime = () => {
+  time += 5;
+};
+
+const descr = document.querySelector("#description");
+const combo = document.querySelector("#combo");
+
+const setCombo = () => {
+  combo.innerHTML = `${comboScore}`;
+};
+
+const bigFeel = (
+  textFeel = `ULTIMATE WEB!!!`,
+  radiusFeelAdd = 350,
+  timeAdd = 10,
+  timing = 8500
+) => {
+  changeBg();
+  changeWeb();
+  radiusFeel = radiusFeelAdd;
+  time += timeAdd;
+  descr.classList.add("description-view");
+  descr.innerHTML = textFeel;
+  setTimeout(() => {
+    radiusFeel = 150;
+    descr.classList.remove("description-view");
+    changeWeb();
+  }, timing);
+};
+
+// const comboTimeout = setTimeout(() => {
+//   comboScore = 0;
+//   setCombo();
+//   console.log(comboScore);
+// }, 11000);
 ////OLD_WEB_ANIMATION
 // document.addEventListener("click", (event) => {
 //         mouse.x = event.x

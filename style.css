@@ -91,12 +91,6 @@
   color: black !important;
 }
 
-.get-element {
-  transform: scale(1.3);
-  box-shadow: 0px 0px 60px black;
-  transition: 0.3s;
-}
-
 /* #item2:hover {
   transform: scale(1.1);
   box-shadow: 0px 0px 40px black;
@@ -192,12 +186,53 @@ header {
 
 .spider-target {
   position: absolute;
-  left: 10px;
-  top: 10px;
+  /* left: 40%; */
+  /* top: 40%; */
+  z-index: 1000;
 }
-.spider-target img {
+.spider-target {
   object-fit: cover;
   width: 30px;
+}
+
+.description {
+  transition: 0.3s;
+  opacity: 0;
+  /* transform: translateY(20px) rotate(360deg); */
+  transform: translateY(20px) rotate(360deg) matrix3d(2, 1, -7, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  color: white;
+}
+
+.description-view {
+  opacity: 1 !important;
+  transform: unset !important;
+  font-weight: 700 !important;
+  font-size: 50px;
+}
+
+.get-element {
+  animation: get 1s ease forwards !important;
+}
+
+.no-finded{
+  background: wheat;
+}
+.no-finded::before{
+  content: "I was here!";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  color: aliceblue;
+}
+
+@keyframes get {
+  100% {
+    transform: scale(4) rotate(-45deg);
+    box-shadow: 0px 0px 60px black;
+  }
 }
 
 @keyframes web {
