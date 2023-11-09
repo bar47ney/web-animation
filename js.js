@@ -654,7 +654,7 @@ light.addEventListener("click", () => {
   }
 });
 
-let radiusFeel = 150;
+let radiusFeel = window.innerWidth * 0.09;
 
 const distanceCheckInterval = setInterval(() => {
   if (sensFlag) {
@@ -737,12 +737,18 @@ window.addEventListener("contextmenu", () => {
     window.addEventListener("mousemove", splderSense);
     // console.log("on");
     sensFlag = true;
+    mainElement.classList.add("sense-on")
+    lightWeb.classList.add("sense-on-icon")
+
+    
     canvas.style.cssText = `
       display: block;`;
   } else {
     window.removeEventListener("mousemove", splderSense);
     // console.log("off");
     sensFlag = false;
+    mainElement.classList.remove("sense-on")
+    lightWeb.classList.remove("sense-on-icon")
     canvas.style.cssText = `
       display: none;`;
   }
@@ -808,7 +814,7 @@ const timer = setInterval(() => {
   if (comboScore >= 4) {
     bigFeel(
       (textFeel = `COMBO ULTIMATE WEB!!!`),
-      (radiusFeelAdd = 450),
+      (radiusFeelAdd = window.innerWidth * 0.2),
       (timeAdd = 10),
       (timing = 12000)
     );
@@ -844,7 +850,7 @@ const setCombo = () => {
 
 const bigFeel = (
   textFeel = `ULTIMATE WEB!!!`,
-  radiusFeelAdd = 350,
+  radiusFeelAdd = window.innerWidth * 0.1,
   timeAdd = 10,
   timing = 8500
 ) => {

@@ -192,14 +192,20 @@ header {
 }
 .spider-target {
   object-fit: cover;
-  width: 30px;
+  width: 2vw;
+  height: 2vw;
+}
+
+.sense-on {
+  animation: sense-on 0.3s ease forwards;
 }
 
 .description {
   transition: 0.3s;
   opacity: 0;
   /* transform: translateY(20px) rotate(360deg); */
-  transform: translateY(20px) rotate(360deg) matrix3d(2, 1, -7, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  transform: translateY(20px) rotate(360deg)
+    matrix3d(2, 1, -7, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
   color: white;
 }
 
@@ -214,10 +220,10 @@ header {
   animation: get 1s ease forwards !important;
 }
 
-.no-finded{
+.no-finded {
   background: wheat;
 }
-.no-finded::before{
+.no-finded::before {
   content: "I was here!";
   position: absolute;
   bottom: 5px;
@@ -226,6 +232,23 @@ header {
   width: 100px;
   height: 100px;
   color: aliceblue;
+}
+
+.sense-on-icon svg{
+  background: wheat;
+  border-radius: 50%;
+}
+
+@keyframes sense-on {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes get {
