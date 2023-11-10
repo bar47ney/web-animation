@@ -467,31 +467,31 @@ let comboTimeout = null;
 
 const audioShot = new Audio();
 // audio.src = `/sound/shot${Math.ceil(Math.random() * 3)}.mp3`;
-audioShot.src = `/sound/shot3.mp3`;
+audioShot.src = `sound/shot3.mp3`;
 
 function playSound(audio) {
   audio.play();
 }
 
 const audioAmbient = new Audio();
-audioAmbient.src = `/sound/sound${Math.ceil(Math.random() * 4)}.mp3`;
+audioAmbient.src = `sound/sound${Math.ceil(Math.random() * 4)}.mp3`;
 audioAmbient.volume = 0.3;
 
 
 audioAmbient.addEventListener("ended", function () {
   // Увеличиваем индекс текущего трека
-  audioAmbient.src = `/sound/sound${Math.ceil(Math.random() * 4)}.mp3`;
+  audioAmbient.src = `sound/sound${Math.ceil(Math.random() * 4)}.mp3`;
   // Воспроизводим следующий трек
   playSound(audioAmbient);
 });
 
 
 const audioSpiderRun = new Audio();
-audioSpiderRun.src = `/sound/spider-run-stop-2_dMs7dOLY.mp3`;
+audioSpiderRun.src = `sound/spider-run-stop-2_dMs7dOLY.mp3`;
 audioSpiderRun.volume = 0.7;
 
 const audioVenom = new Audio();
-audioVenom.src = `/sound/venom.mp3`
+audioVenom.src = `sound/venom.mp3`
 audioVenom.volume = 1;
 
 window.addEventListener("click", (event) => {
