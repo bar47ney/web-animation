@@ -465,13 +465,44 @@ let totalScore = 0;
 let comboScore = 0;
 let comboTimeout = null;
 
+const audioShot = new Audio();
+// audio.src = `/sound/shot${Math.ceil(Math.random() * 3)}.mp3`;
+audioShot.src = `/sound/shot3.mp3`;
+
+function playSound(audio) {
+  audio.play();
+}
+
+const audioAmbient = new Audio();
+audioAmbient.src = `/sound/sound${Math.ceil(Math.random() * 4)}.mp3`;
+audioAmbient.volume = 0.3;
+
+
+audioAmbient.addEventListener("ended", function () {
+  // Увеличиваем индекс текущего трека
+  audioAmbient.src = `/sound/sound${Math.ceil(Math.random() * 4)}.mp3`;
+  // Воспроизводим следующий трек
+  playSound(audioAmbient);
+});
+
+
+const audioSpiderRun = new Audio();
+audioSpiderRun.src = `/sound/spider-run-stop-2_dMs7dOLY.mp3`;
+audioSpiderRun.volume = 0.7;
+
+const audioVenom = new Audio();
+audioVenom.src = `/sound/venom.mp3`
+audioVenom.volume = 1;
+
 window.addEventListener("click", (event) => {
+  playSound(audioAmbient);
   if (event.target.classList.contains("target")) {
     if (document.querySelectorAll(".target")) {
       document.querySelectorAll(".target").forEach((item) => {
         item.classList.remove(".target");
       });
     }
+    playSound(audioShot);
     createNewTargets();
     // chooseTarget();
     console.log(document.querySelectorAll(".target"));
@@ -727,6 +758,7 @@ const distanceCheckInterval = setInterval(() => {
 const splderSense = () => {
   mouse.x = event.x;
   mouse.y = event.y;
+  playSound(audioSpiderRun)
 };
 
 let sensFlag = false;
@@ -737,18 +769,18 @@ window.addEventListener("contextmenu", () => {
     window.addEventListener("mousemove", splderSense);
     // console.log("on");
     sensFlag = true;
-    mainElement.classList.add("sense-on")
-    lightWeb.classList.add("sense-on-icon")
-
-    
+    mainElement.classList.remove("sense-off");
+    mainElement.classList.add("sense-on");
+    lightWeb.classList.add("sense-on-icon");
     canvas.style.cssText = `
       display: block;`;
   } else {
     window.removeEventListener("mousemove", splderSense);
     // console.log("off");
     sensFlag = false;
-    mainElement.classList.remove("sense-on")
-    lightWeb.classList.remove("sense-on-icon")
+    mainElement.classList.remove("sense-on");
+    mainElement.classList.add("sense-off");
+    lightWeb.classList.remove("sense-on-icon");
     canvas.style.cssText = `
       display: none;`;
   }
@@ -796,8 +828,8 @@ const createNewTargets = () => {
   // }
 };
 
-console.log(window.innerHeight)
-console.log(window.innerWidth)
+console.log(window.innerHeight);
+console.log(window.innerWidth);
 createNewTargets();
 
 // chooseTarget();
@@ -820,7 +852,7 @@ const timer = setInterval(() => {
     );
     comboScore = 0;
     setCombo();
-    clearTimeout(comboTimeout)
+    clearTimeout(comboTimeout);
   }
   if (time === 0) {
     window.removeEventListener("mousemove", splderSense);
@@ -854,6 +886,7 @@ const bigFeel = (
   timeAdd = 10,
   timing = 8500
 ) => {
+  playSound(audioVenom)
   changeBg();
   changeWeb();
   radiusFeel = radiusFeelAdd;
