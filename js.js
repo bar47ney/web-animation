@@ -334,7 +334,7 @@ class Particle {
       this.distanceX * this.distanceX + this.distanceY * this.distanceY
     );
     this.tangenc = this.distanceX / this.distanceY;
-    this.directionX = getRandomArbitrary(17, 25);
+    this.directionX = getRandomArbitrary(66, 99);
     this.directionY = this.directionX / this.tangenc;
     this.direction = Math.sqrt(
       this.directionX * this.directionX + this.directionY * this.directionY
@@ -453,6 +453,7 @@ function getElementToWeb(targetElement) {
     targetElement.remove();
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    time = stopTime;
   }, 1000);
 }
 
@@ -475,8 +476,10 @@ function playSound(audio) {
 
 const audioAmbient = new Audio();
 audioAmbient.src = `sound/sound${Math.ceil(Math.random() * 4)}.mp3`;
-audioAmbient.volume = 0.3;
+audioAmbient.volume = 0.1;
 
+const audioAmbientVenom = new Audio();
+audioAmbientVenom.volume = 1;
 
 audioAmbient.addEventListener("ended", function () {
   // Увеличиваем индекс текущего трека
@@ -485,15 +488,17 @@ audioAmbient.addEventListener("ended", function () {
   playSound(audioAmbient);
 });
 
-
 const audioSpiderRun = new Audio();
-audioSpiderRun.src = `sound/spider-run-stop-2_dMs7dOLY.mp3`;
+audioSpiderRun.src = `sound/spider-run.mp3`;
 audioSpiderRun.volume = 0.7;
 
 const audioVenom = new Audio();
-audioVenom.src = `sound/venom.mp3`
+audioVenom.src = `sound/venom.mp3`;
 audioVenom.volume = 1;
 
+const item2 = document.querySelector("#item2");
+
+let stopTime = null;
 window.addEventListener("click", (event) => {
   playSound(audioAmbient);
   if (event.target.classList.contains("target")) {
@@ -508,6 +513,8 @@ window.addEventListener("click", (event) => {
     console.log(document.querySelectorAll(".target"));
     totalScore += 1;
     comboScore += 1;
+    item2.classList.remove(`opacity-venom${comboScore - 1}`);
+    item2.classList.add(`opacity-venom${comboScore}`);
     setCombo();
     if (totalScore % 5 === 0) {
       // bigFeel();
@@ -518,12 +525,15 @@ window.addEventListener("click", (event) => {
     if (comboScore === 1) {
       console.log("start Combo");
       comboTimeout = setTimeout(() => {
+        item2.classList.remove(`opacity-venom${comboScore}`);
         comboScore = 0;
+        item2.classList.add(`opacity-venom${comboScore}`);
         setCombo();
         console.log("end Combo");
       }, 13000);
     }
     addTime();
+    stopTime = time;
     document.querySelector("#score").innerHTML = `Score: ${totalScore}`;
     targetElement = event.target;
     particleArray = [];
@@ -685,7 +695,7 @@ light.addEventListener("click", () => {
   }
 });
 
-let radiusFeel = window.innerWidth * 0.09;
+let radiusFeel = window.innerWidth * 0.12;
 
 const distanceCheckInterval = setInterval(() => {
   if (sensFlag) {
@@ -758,7 +768,7 @@ const distanceCheckInterval = setInterval(() => {
 const splderSense = () => {
   mouse.x = event.x;
   mouse.y = event.y;
-  playSound(audioSpiderRun)
+  playSound(audioSpiderRun);
 };
 
 let sensFlag = false;
@@ -846,7 +856,7 @@ const timer = setInterval(() => {
   if (comboScore >= 4) {
     bigFeel(
       (textFeel = `COMBO ULTIMATE WEB!!!`),
-      (radiusFeelAdd = window.innerWidth * 0.2),
+      (radiusFeelAdd = window.innerWidth * 0.22),
       (timeAdd = 10),
       (timing = 12000)
     );
@@ -886,7 +896,12 @@ const bigFeel = (
   timeAdd = 10,
   timing = 8500
 ) => {
-  playSound(audioVenom)
+  playSound(audioVenom);
+  audioAmbient.pause();
+  audioAmbientVenom.src = `sound/venom-theme${Math.ceil(
+    Math.random() * 2
+  )}.mp3`;
+  playSound(audioAmbientVenom);
   changeBg();
   changeWeb();
   radiusFeel = radiusFeelAdd;
@@ -894,9 +909,14 @@ const bigFeel = (
   descr.classList.add("description-view");
   descr.innerHTML = textFeel;
   setTimeout(() => {
-    radiusFeel = 150;
+    radiusFeel = window.innerWidth * 0.12;
     descr.classList.remove("description-view");
     changeWeb();
+    item2.classList.remove(`opacity-venom4`);
+    item2.classList.add(`opacity-venom${comboScore}`);
+    audioAmbientVenom.pause();
+    audioAmbientVenom.currentTime = 0;
+    audioAmbient.play();
   }, timing);
 };
 
