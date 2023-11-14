@@ -446,8 +446,8 @@ function getElementToWeb(targetElement) {
 
   targetElement.classList.add("get-element");
   setTimeout(() => {
-    canvas.style.cssText = `
-        display: none;`;
+    // canvas.style.cssText = `
+    //     display: none;`;
     // targetElement.style.cssText = oldStyle;
     targetElement.classList.remove("get-element");
     targetElement.remove();
@@ -501,12 +501,15 @@ const item2 = document.querySelector("#item2");
 let stopTime = null;
 window.addEventListener("click", (event) => {
   playSound(audioAmbient);
-  if (event.target.classList.contains("target")) {
+  // if (event.target.classList.contains("target")) {
+  checkIfTargetCoordinate(event);
+  if (flagCheck) {
     if (document.querySelectorAll(".target")) {
       document.querySelectorAll(".target").forEach((item) => {
         item.classList.remove(".target");
       });
-    }
+    }    
+    flagCheck = false
     playSound(audioShot);
     createNewTargets();
     // chooseTarget();
@@ -535,7 +538,8 @@ window.addEventListener("click", (event) => {
     addTime();
     stopTime = time;
     document.querySelector("#score").innerHTML = `Score: ${totalScore}`;
-    targetElement = event.target;
+    targetElement = targetElement2;
+    console.log(targetElement);
     particleArray = [];
     canvas.style.cssText = `
       display: block;`;
@@ -773,28 +777,37 @@ const splderSense = () => {
 
 let sensFlag = false;
 
-window.addEventListener("contextmenu", () => {
-  event.preventDefault();
-  if (!sensFlag) {
-    window.addEventListener("mousemove", splderSense);
-    // console.log("on");
-    sensFlag = true;
-    mainElement.classList.remove("sense-off");
-    mainElement.classList.add("sense-on");
-    lightWeb.classList.add("sense-on-icon");
-    canvas.style.cssText = `
+// window.addEventListener("contextmenu", () => {
+//   event.preventDefault();
+//   if (!sensFlag) {
+//     window.addEventListener("mousemove", splderSense);
+//     // console.log("on");
+//     sensFlag = true;
+//     mainElement.classList.remove("sense-off");
+//     mainElement.classList.add("sense-on");
+//     lightWeb.classList.add("sense-on-icon");
+//     canvas.style.cssText = `
+//       display: block;`;
+//   } else {
+//     window.removeEventListener("mousemove", splderSense);
+//     // console.log("off");
+//     sensFlag = false;
+//     mainElement.classList.remove("sense-on");
+//     mainElement.classList.add("sense-off");
+//     lightWeb.classList.remove("sense-on-icon");
+//     canvas.style.cssText = `
+//       display: none;`;
+//   }
+// });
+
+window.addEventListener("mousemove", splderSense);
+// console.log("on");
+sensFlag = true;
+mainElement.classList.remove("sense-off");
+mainElement.classList.add("sense-on");
+lightWeb.classList.add("sense-on-icon");
+canvas.style.cssText = `
       display: block;`;
-  } else {
-    window.removeEventListener("mousemove", splderSense);
-    // console.log("off");
-    sensFlag = false;
-    mainElement.classList.remove("sense-on");
-    mainElement.classList.add("sense-off");
-    lightWeb.classList.remove("sense-on-icon");
-    canvas.style.cssText = `
-      display: none;`;
-  }
-});
 
 // Получаем все элементы с классом '.target'
 const targets = document.querySelectorAll(".target");
@@ -920,6 +933,37 @@ const bigFeel = (
   }, timing);
 };
 
+let targetElement2 = null;
+let flagCheck = false;
+// Добавляем обработчик события "click" к элементу
+function checkIfTargetCoordinate(event) {
+  document.querySelectorAll(".target").forEach((item) => {
+    // Получаем координаты клика
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+
+    // Получаем границы элемента
+    const rect = item.getBoundingClientRect();
+    const elementX = rect.left;
+    const elementY = rect.top;
+    const elementWidth = rect.width;
+    const elementHeight = rect.height;
+
+    // Проверяем, находятся ли координаты клика внутри границ элемента
+    if (
+      clickX >= elementX &&
+      clickX <= elementX + elementWidth &&
+      clickY >= elementY &&
+      clickY <= elementY + elementHeight
+    ) {
+      targetElement2 = item;
+      console.log("ok");
+      flagCheck = true;
+    } else {
+      console.log("no");
+    }
+  });
+}
 // const comboTimeout = setTimeout(() => {
 //   comboScore = 0;
 //   setCombo();
@@ -1054,3 +1098,5 @@ const bigFeel = (
 // const targets = document.querySelectorAll(".target");
 
 // Функция для вычисления расстояния между двумя точками
+
+/////////////////////
