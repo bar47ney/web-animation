@@ -315,6 +315,11 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+const canvas2 = document.getElementById("canvas2");
+const ctx2 = canvas2.getContext("2d");
+canvas2.width = window.innerWidth;
+canvas2.height = window.innerHeight;
+
 ////NEW_WEB_ANIMATION
 let particleArray = [];
 const lengthOfParticles = 1000;
@@ -385,15 +390,15 @@ class Particle {
       // ctx.arc(this.x, this.y, this.width, 0, Math.PI * 2)
       // ctx.closePath()
       // ctx.fill()
-      ctx.beginPath();
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.strokeStyle = colorWeb + " 0.8)";
-      ctx.lineWidth = this.width;
-      ctx.moveTo(this.startX, this.startY);
-      ctx.lineTo(this.x, this.y);
-      ctx.stroke();
-      ctx.closePath();
+      ctx2.beginPath();
+      ctx2.lineCap = "round";
+      ctx2.lineJoin = "round";
+      ctx2.strokeStyle = colorWeb + " 0.8)";
+      ctx2.lineWidth = this.width;
+      ctx2.moveTo(this.startX, this.startY);
+      ctx2.lineTo(this.x, this.y);
+      ctx2.stroke();
+      ctx2.closePath();
     }
   }
 }
@@ -414,6 +419,9 @@ window.addEventListener("resize", () => {
   canvas.style.cssText = `
         display: none;`;
   targetElement.style.cssText = oldStyle;
+
+  canvas2.width = window.innerWidth;
+  canvas2.height = window.innerHeight;
 });
 
 let targetElement = null;
@@ -452,7 +460,7 @@ function getElementToWeb(targetElement) {
     targetElement.classList.remove("get-element");
     targetElement.remove();
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
     time = stopTime;
   }, 1000);
 }
@@ -465,6 +473,7 @@ function getElementToWeb(targetElement) {
 let totalScore = 0;
 let comboScore = 0;
 let comboTimeout = null;
+let comboList = 0;
 
 const audioShot = new Audio();
 // audio.src = `/sound/shot${Math.ceil(Math.random() * 3)}.mp3`;
@@ -496,7 +505,9 @@ const audioVenom = new Audio();
 audioVenom.src = `sound/venom.mp3`;
 audioVenom.volume = 1;
 
-const item2 = document.querySelector("#item2");
+const item2 = document.querySelector("#spider2");
+let combotarget = 6;
+const combotargetBegin = 6;
 
 let stopTime = null;
 window.addEventListener("click", (event) => {
@@ -508,16 +519,29 @@ window.addEventListener("click", (event) => {
       document.querySelectorAll(".target").forEach((item) => {
         item.classList.remove(".target");
       });
-    }    
-    flagCheck = false
+    }
+    flagCheck = false;
     playSound(audioShot);
     createNewTargets();
     // chooseTarget();
-    console.log(document.querySelectorAll(".target"));
+    // console.log(document.querySelectorAll(".target"));
     totalScore += 1;
     comboScore += 1;
-    item2.classList.remove(`opacity-venom${comboScore - 1}`);
-    item2.classList.add(`opacity-venom${comboScore}`);
+    if (comboScore === combotarget) {
+      bigFeel(
+        (textFeel = `COMBO ULTIMATE WEB!!!`),
+        (radiusFeelAdd = window.innerWidth * 0.22),
+        (timeAdd = 5),
+        (timing = 12000 + comboList * 4000)
+      );
+      comboScore = 0;
+      item2.style = `opacity: ${comboScore / combotarget}`;
+      setCombo();
+      // clearTimeout(comboTimeout);
+    }
+    item2.style = `opacity: ${comboScore / combotarget}`;
+    // item2.classList.remove(`opacity-venom${comboScore - 1}`);
+    // item2.classList.add(`opacity-venom${comboScore}`);
     setCombo();
     if (totalScore % 5 === 0) {
       // bigFeel();
@@ -525,21 +549,29 @@ window.addEventListener("click", (event) => {
     if (totalScore % 10 === 0) {
       changeBg();
     }
-    if (comboScore === 1) {
+    if (comboScore === 1 && comboList === 0) {
       console.log("start Combo");
       comboTimeout = setTimeout(() => {
-        item2.classList.remove(`opacity-venom${comboScore}`);
+        // item2.classList.remove(`opacity-venom${comboScore}`);
         comboScore = 0;
-        item2.classList.add(`opacity-venom${comboScore}`);
+        combotarget = combotargetBegin;
+        comboList = 0;
+        // item2.classList.add(`opacity-venom${comboScore}`);
+        item2.style = `opacity: ${comboScore / combotarget}`;
         setCombo();
-        console.log("end Combo");
-      }, 13000);
+        // console.log("end Combo");
+      }, 12000);
+      // if(comboScore)
+    }
+    if (comboList === 1) {
+      clearTimeout(comboTimeout);
+      console.log("end comboTimeout");
     }
     addTime();
     stopTime = time;
     document.querySelector("#score").innerHTML = `Score: ${totalScore}`;
     targetElement = targetElement2;
-    console.log(targetElement);
+    // console.log(targetElement);
     particleArray = [];
     canvas.style.cssText = `
       display: block;`;
@@ -630,17 +662,17 @@ function connect() {
             ctx.strokeStyle = `${colorWeb}, 0.4)`;
 
             if (distance < 70) {
-              ctx.lineWidth = 1;
-              ctx.beginPath();
-              ctx.moveTo(
+              ctx2.lineWidth = 1;
+              ctx2.beginPath();
+              ctx2.moveTo(
                 particleArray[i].pointsWeb[a].x,
                 particleArray[i].pointsWeb[a].y
               );
-              ctx.lineTo(
+              ctx2.lineTo(
                 particleArray[j].pointsWeb[b].x,
                 particleArray[j].pointsWeb[b].y
               );
-              ctx.stroke();
+              ctx2.stroke();
               particleArray[i].pointsWeb[a].connect++;
               particleArray[j].pointsWeb[b].connect++;
             }
@@ -851,32 +883,26 @@ const createNewTargets = () => {
   // }
 };
 
-console.log(window.innerHeight);
-console.log(window.innerWidth);
+// console.log(window.innerHeight);
+// console.log(window.innerWidth);
 createNewTargets();
 
 // chooseTarget();
 
-console.log(document.querySelectorAll(".target"));
+// console.log(document.querySelectorAll(".target"));
 
 let time = 10;
 const timeElement = document.querySelector("#time");
 
 const timer = setInterval(() => {
   time--;
-  timeElement.innerHTML = time;
-  console.log(radiusFeel);
-  if (comboScore >= 4) {
-    bigFeel(
-      (textFeel = `COMBO ULTIMATE WEB!!!`),
-      (radiusFeelAdd = window.innerWidth * 0.22),
-      (timeAdd = 10),
-      (timing = 12000)
-    );
-    comboScore = 0;
-    setCombo();
-    clearTimeout(comboTimeout);
+  if (comboTiming !== 0) {
+    comboTiming--;
+    comboTime.innerHTML = `${comboTiming}`;
   }
+  timeElement.innerHTML = time;
+  console.log(comboScore);
+  console.log(combotarget);
   if (time === 0) {
     window.removeEventListener("mousemove", splderSense);
     clearInterval(distanceCheckInterval);
@@ -898,10 +924,16 @@ const addTime = () => {
 
 const descr = document.querySelector("#description");
 const combo = document.querySelector("#combo");
+const comboTargetBlock = document.querySelector("#combo-target");
+const comboTime = document.querySelector("#combo-time");
+let comboTiming = 0;
 
 const setCombo = () => {
   combo.innerHTML = `${comboScore}`;
+  comboTargetBlock.innerHTML = `${combotarget}`;
 };
+
+let endCombo = null;
 
 const bigFeel = (
   textFeel = `ULTIMATE WEB!!!`,
@@ -909,6 +941,14 @@ const bigFeel = (
   timeAdd = 10,
   timing = 8500
 ) => {
+  comboList += 1;
+  if (comboList >= 2) {
+    clearTimeout(endCombo);
+  }
+  comboTiming = timing / 1000;
+  comboTime.innerHTML = `${comboTiming}`;
+  combotarget += 2;
+  comboScore = 0;
   playSound(audioVenom);
   audioAmbient.pause();
   audioAmbientVenom.src = `sound/venom-theme${Math.ceil(
@@ -921,15 +961,20 @@ const bigFeel = (
   time += timeAdd;
   descr.classList.add("description-view");
   descr.innerHTML = textFeel;
-  setTimeout(() => {
+  endCombo = setTimeout(() => {
     radiusFeel = window.innerWidth * 0.12;
     descr.classList.remove("description-view");
     changeWeb();
-    item2.classList.remove(`opacity-venom4`);
-    item2.classList.add(`opacity-venom${comboScore}`);
+    // item2.classList.remove(`opacity-venom4`);
+    // item2.classList.add(`opacity-venom${comboScore}`);
+    combotarget = combotargetBegin;
+    comboScore = 0;
+    comboList = 0;
+    item2.style = `opacity: ${comboScore / combotarget}`;
     audioAmbientVenom.pause();
     audioAmbientVenom.currentTime = 0;
     audioAmbient.play();
+    comboTime.innerHTML = `${0}`;
   }, timing);
 };
 
