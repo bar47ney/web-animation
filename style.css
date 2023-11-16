@@ -224,9 +224,13 @@ header {
   /* cursor: pointer; */
   transition: 0.3s;
   z-index: 20;
-  background: rgba(255, 255, 255, 0.5);
+  background: transparent !important;
 }
 
+.no-more{
+  /* background: rgba(255, 255, 255, 0.5); */
+  opacity: 1 !important;
+}
 .potencial-target {
   animation: web 10s ease infinite;
   opacity: 0;
@@ -279,7 +283,7 @@ header {
   z-index: 10;
 }
 
-.get-element {
+.get-element  {
   animation: get 1s ease forwards !important;
 }
 
@@ -330,7 +334,8 @@ header {
 @keyframes get {
   100% {
     transform: scale(4) rotate(-45deg);
-    box-shadow: 0px 0px 60px black;
+    /* box-shadow: 0px 0px 60px black; */
+    opacity: 1 !important;
   }
 }
 
