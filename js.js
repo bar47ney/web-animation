@@ -196,18 +196,18 @@
 
 const main = document.querySelector(".main");
 const lightWeb = document.querySelector("#light-web");
-let colorWeb = `rgba(255, 255, 255, 0.8)`;
+let colorWeb = `rgba(9, 9, 9, 0.8)`;
 let flagWeb = false;
 if (lightWeb) {
   lightWeb.addEventListener("click", () => {
     if (!flagWeb) {
-      colorWeb = `rgba(9, 9, 9,`;
+      colorWeb = `rgba(255, 255, 255,`;
       // console.log(colorWeb);
       flagWeb = true;
       lightWeb.classList.add("black-web");
     } else {
-      colorWeb = `rgba(255, 255, 255,`;
       // console.log(colorWeb);
+      colorWeb = `rgba(9, 9, 9,`;
       flagWeb = false;
       lightWeb.classList.remove("black-web");
     }
@@ -216,12 +216,12 @@ if (lightWeb) {
 
 const changeWeb = () => {
   if (!flagWeb) {
-    colorWeb = `rgba(9, 9, 9,`;
     // console.log(colorWeb);
+    colorWeb = `rgba(255, 255, 255,`;
     flagWeb = true;
     lightWeb.classList.add("black-web");
   } else {
-    colorWeb = `rgba(255, 255, 255,`;
+    colorWeb = `rgba(9, 9, 9,`;
     // console.log(colorWeb);
     flagWeb = false;
     lightWeb.classList.remove("black-web");
@@ -233,25 +233,28 @@ let paramBgColor = {
     first: "",
     second: "",
   },
-  night: {
+  day: {
     // first: "#1a387513",
     // second: "#041a46",
-    first: "#000",
-    second: "#000",
-  },
-  day: {
     first: "red",
     second: "#300404",
   },
+  night: {
+    first: "#000000e3",
+    second: "#000000",
+  },
   dayOrNight() {
-    let nowHours = new Date(Date.now()).getHours();
-    // console.log(nowHours);
-    if (21 <= nowHours || nowHours < 9) {
-      // this.now = this.night;
-      this.now = this.day;
-    } else if (9 <= nowHours && nowHours < 21) {
+    // let nowHours = new Date(Date.now()).getHours();
+    // // console.log(nowHours);
+    // if (21 <= nowHours || nowHours < 9) {
+    // this.now = this.night;
+    if (this.now === this.day) {
+      this.now = this.night;
+    } else {
       this.now = this.day;
     }
+    // } else if (9 <= nowHours && nowHours < 21) {
+    // this.now = this.day;
   },
 };
 
@@ -462,6 +465,9 @@ function getElementToWeb(targetElement) {
 
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
     time = stopTime;
+    document.querySelectorAll(".no-more").forEach((item) => {
+      item.remove();
+    });
   }, 1000);
 }
 
@@ -510,6 +516,7 @@ audioVenom.volume = 0.5;
 const item2 = document.querySelector("#spider2");
 let combotarget = 6;
 const combotargetBegin = 6;
+const opacityVenom = 5;
 
 const giveTarget = (event) => {
   playSound(audioAmbient);
@@ -533,15 +540,15 @@ const giveTarget = (event) => {
       bigFeel(
         (textFeel = `COMBO ULTIMATE WEB!!!`),
         (radiusFeelAdd = window.innerWidth * 0.22),
-        (timeAdd = 5),
-        (timing = 12000 + comboList * 4000)
+        (timeAdd = 3),
+        (timing = 12000 + comboList * 1500)
       );
       comboScore = 0;
-      item2.style = `opacity: ${comboScore / combotarget}`;
+      item2.style = `opacity: ${comboScore / opacityVenom / combotarget}; filter: blur(${combotarget / comboScore}px);`;
       setCombo();
       // clearTimeout(comboTimeout);
     }
-    item2.style = `opacity: ${comboScore / combotarget}`;
+    item2.style = `opacity: ${comboScore / opacityVenom / combotarget}; filter: blur(${combotarget / comboScore}px);`;
     // item2.classList.remove(`opacity-venom${comboScore - 1}`);
     // item2.classList.add(`opacity-venom${comboScore}`);
     setCombo();
@@ -549,7 +556,7 @@ const giveTarget = (event) => {
       // bigFeel();
     }
     if (totalScore % 10 === 0) {
-      changeBg();
+      // changeBg();
     }
     if (comboScore === 1 && comboList === 0) {
       console.log("start Combo");
@@ -559,7 +566,7 @@ const giveTarget = (event) => {
         combotarget = combotargetBegin;
         comboList = 0;
         // item2.classList.add(`opacity-venom${comboScore}`);
-        item2.style = `opacity: ${comboScore / combotarget}`;
+        item2.style = `opacity: ${comboScore / opacityVenom / combotarget}; filter: blur(${combotarget / comboScore}px);`;
         setCombo();
         // console.log("end Combo");
       }, 12000);
@@ -569,7 +576,7 @@ const giveTarget = (event) => {
       clearTimeout(comboTimeout);
       console.log("end comboTimeout");
     }
-    addTime();
+    addTime(2);
     stopTime = time;
     document.querySelector("#score").innerHTML = `Score: ${totalScore}`;
     targetElement = targetElement2;
@@ -632,13 +639,25 @@ window.addEventListener("click", (event) => {
   giveTarget(event);
 });
 
+// const changeBg = () => {
+//   paramBgColor.day.first = `rgb(${Math.floor(
+//     Math.random() * 255
+//   )}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
+//   paramBgColor.day.second = `rgb(${Math.floor(
+//     Math.random() * 255
+//   )}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
+// };
+
 const changeBg = () => {
-  paramBgColor.day.first = `rgb(${Math.floor(
-    Math.random() * 255
-  )}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
-  paramBgColor.day.second = `rgb(${Math.floor(
-    Math.random() * 255
-  )}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
+  paramBgColor.dayOrNight();
+  changeWeb()
+  // paramBgColor.day.first = `rgb(${Math.floor(
+  //   Math.random() * 255
+  // )}, 0, 0)`;
+  // paramBgColor.day.second = `rgb(${Math.floor(
+  //   Math.random() * 255
+  // )}, 0, 0)`;
+  mainElement.classList.toggle("theme");
 };
 
 function getRandomArbitrary(min, max) {
@@ -768,14 +787,14 @@ const distanceCheckInterval = setInterval(() => {
       //   opacityValueDist * 2.7
       // }px rgba(0, 0, 0, ${opacityValueDist});`;
 
-      if (distance <= 100 && comboScore >= 2) {
+      if (distance <= radiusFeel && comboList >= 1) {
         // item.remove()
         // createNewTargets()
         const ojbject = {
           clientX: mouse.x,
-          clientY: mouse.y
-        }
-        giveTarget(ojbject)
+          clientY: mouse.y,
+        };
+        giveTarget(ojbject);
       }
 
       if (distance < radiusFeel) {
@@ -798,9 +817,9 @@ const distanceCheckInterval = setInterval(() => {
     // ctx.strokeStyle = `${colorWeb}, ${opacityValue})`;
     // ctx.strokeStyle = colorWeb + " " + opacityValue + ")";
     if (flagWeb) {
-      ctx.strokeStyle = "rgba(9, 9, 9," + opacityValue + ")";
-    } else {
       ctx.strokeStyle = "rgba(255, 255, 255," + opacityValue + ")";
+    } else {
+      ctx.strokeStyle = "rgba(9, 9, 9," + opacityValue + ")";
     }
 
     if (distance < radiusSpider) {
@@ -1098,7 +1117,7 @@ const timeElement = document.querySelector("#time");
 
 const timer = setInterval(() => {
   time--;
-  if (comboTiming !== 0) {
+  if (comboTiming >= 0) {
     comboTiming--;
     comboTime.innerHTML = `${comboTiming}`;
   }
@@ -1120,8 +1139,8 @@ const timer = setInterval(() => {
   }
 }, 1000);
 
-const addTime = () => {
-  time += 5;
+const addTime = (plusTime) => {
+  time += plusTime;
 };
 
 const descr = document.querySelector("#description");
@@ -1158,7 +1177,7 @@ const bigFeel = (
   )}.mp3`;
   playSound(audioAmbientVenom);
   changeBg();
-  changeWeb();
+  // changeWeb();
   radiusFeel = radiusFeelAdd;
   time += timeAdd;
   descr.classList.add("description-view");
@@ -1166,13 +1185,14 @@ const bigFeel = (
   endCombo = setTimeout(() => {
     radiusFeel = window.innerWidth * 0.12;
     descr.classList.remove("description-view");
-    changeWeb();
+    changeBg();
+    // changeWeb();
     // item2.classList.remove(`opacity-venom4`);
     // item2.classList.add(`opacity-venom${comboScore}`);
     combotarget = combotargetBegin;
     comboScore = 0;
     comboList = 0;
-    item2.style = `opacity: ${comboScore / combotarget}`;
+    item2.style = `opacity: ${comboScore / opacityVenom / combotarget}; filter: blur(${combotarget / comboScore}px);`;
     audioAmbientVenom.pause();
     audioAmbientVenom.currentTime = 0;
     audioAmbient.play();
@@ -1195,12 +1215,14 @@ function checkIfTargetCoordinate(event) {
     const elementWidth = rect.width;
     const elementHeight = rect.height;
 
+    const radiusObjcect = 100;
+
     // Проверяем, находятся ли координаты клика внутри границ элемента
     if (
-      clickX >= elementX &&
-      clickX <= elementX + elementWidth &&
-      clickY >= elementY &&
-      clickY <= elementY + elementHeight
+      clickX >= elementX - radiusObjcect &&
+      clickX <= elementX + elementWidth + radiusObjcect &&
+      clickY >= elementY - radiusObjcect &&
+      clickY <= elementY + elementHeight + radiusObjcect
     ) {
       targetElement2 = item;
       console.log("ok");
